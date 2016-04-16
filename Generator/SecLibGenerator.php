@@ -53,15 +53,17 @@ class SecLibGenerator extends AbstractGenerator
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException If an error occurs
+     * @throws \RuntimeException If the output directory is not writable
      */
     public function export(array $keys)
     {
-        try {
-            file_put_contents($this->publicKeyPath, $keys['public']);
-            file_put_contents($this->privateKeyPath, $keys['private']);
-        } catch (\Exception $e) {
-            throw new \RuntimeException($e->getMessage());
+        $directory = dirname($this->publicKeyPath);
+
+        if (!is_writable($directory)) {
+            throw new \RuntimeException(sprintf('The directory "%s" doesn\'t exist or is not writable', $directory));
         }
+
+        file_put_contents($this->publicKeyPath, $keys['public']);
+        file_put_contents($this->privateKeyPath, $keys['private']);
     }
 }

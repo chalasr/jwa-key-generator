@@ -11,12 +11,11 @@
 
 namespace RCH\Keygen\Command;
 
+use RCH\Keygen\Generator\GeneratorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use RCH\Keygen\Generator\GeneratorInterface;
 
 /**
  * GenerateKeysCommand.
@@ -47,6 +46,18 @@ class GenerateKeysCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->generator->export($this->generator->generate());
+        $keys = $this->generator->generate();
+
+        try {
+            $this->generator->export($keys);
+        } catch (\Exception $e) {
+            $output->writeln(
+                sprintf('<error>An error occurred while genereting the keys (%s)%s</error>', $e->getMessage(), PHP_EOL)
+            );
+
+            return 0;
+        }
+
+        return 1;
     }
 }
