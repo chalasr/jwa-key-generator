@@ -15,6 +15,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use RCH\Keygen\Generator\GeneratorInterface;
 
 /**
  * GenerateKeysCommand.
@@ -23,6 +25,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class GenerateKeysCommand extends Command
 {
+    public function __construct(GeneratorInterface $generator)
+    {
+        parent::__construct();
+
+        $this->generator = $generator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,10 +39,10 @@ class GenerateKeysCommand extends Command
     {
         $this
             ->setName('generate')
-            ->setDescription('Generate keys for JWA encryption/decryption')
-            ->addOption('dest-path', null, InputOption::VALUE_OPTIONAL, 'The directory where in the keys will be generated')
-            ->addOption('encryption-engine', null, InputOption::VALUE_REQUIRED, 'The encryption engine (openssl or phpseclib)')
-            ->addOption('encryption-algorithm', null, InputOption::VALUE_OPTIONAL, 'The encryption algorithm');
+            ->setDescription('Generate public/private keys')
+            ->addOption('dest-path', null, InputOption::VALUE_OPTIONAL, 'The absolute path of the directory where in the keys will be exported, by default they will be only displayed in output', null)
+            ->addOption('key-type', null, InputOption::VALUE_OPTIONAL, "The key type, can be 'rsa' or 'dsa'", 'rsa')
+            ->addOption('encryption-engine', null, InputOption::VALUE_REQUIRED, 'The encryption engine, can be openssl or seclib', 'openssl');
     }
 
     /**
@@ -41,5 +50,6 @@ class GenerateKeysCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->generator->export($this->generator->generate());
     }
 }

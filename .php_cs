@@ -1,9 +1,6 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->in(array(__DIR__))
-;
-
+$finder = PhpCsFixer\Finder::create()->in(array(__DIR__));
 $header = <<<EOF
 This file is part of the RCH package.
 

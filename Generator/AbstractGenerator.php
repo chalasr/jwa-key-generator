@@ -21,12 +21,17 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @var string
      */
-    protected $publicKeyPath;
+    protected $privateKeyPath;
 
     /**
      * @var string
      */
-    protected $privateKeyPath;
+    protected $publicKeyPath;
+
+    /**
+     * @var int
+     */
+    protected $privateKeyBits;
 
     /**
      * @var string
@@ -38,12 +43,32 @@ abstract class AbstractGenerator implements GeneratorInterface
      *
      * @param string $privateKeyPath
      * @param string $publicKeyPath
+     * @param int    $privateKeyBits
+     * @param string $privateKeyType
      * @param string $passphrase
      */
-    public function __construct($privateKeyPath, $publicKeyPath, $passphrase)
+    public function __construct($privateKeyPath, $publicKeyPath, $privateKeyBits, $privateKeyType, $passphrase)
     {
         $this->privateKeyPath = $privateKeyPath;
         $this->publicKeyPath  = $publicKeyPath;
+        $this->privateKeyBits = $privateKeyBits;
+        $this->privateKeyType = $privateKeyType;
         $this->passphrase = $passphrase;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrivateKeyPath()
+    {
+        return $this->privateKeyPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicKeyPath()
+    {
+        return $this->publicKeyPath;
     }
 }

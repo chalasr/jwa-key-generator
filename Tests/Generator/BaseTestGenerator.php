@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the RCH package.
+ *
+ * (c) Robin Chalas <robin.chalas@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace RCH\Keygen\Tests\Generator;
 
 /**
- * OpenSSLKeyLoaderTest
+ * OpenSSLKeyLoaderTest.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -13,7 +22,7 @@ class BaseTestGenerator extends \PHPUnit_Framework_TestCase
      * @var \RCH\Keygen\Generator\GeneratorInterface
      */
     protected $generator;
-
+    
     /**
      * Test OpenSSLKeyGeneator::generate().
      */
@@ -34,17 +43,16 @@ class BaseTestGenerator extends \PHPUnit_Framework_TestCase
         $keys = $this->generator->generate();
         $this->generator->export($keys);
 
-        $this->assertFileExists('private.pem');
-        $this->assertFileExists('public.pem');
+        $this->assertFileExists($this->generator->getPrivateKeyPath());
+        $this->assertFileExists($this->generator->getPublicKeyPath());
     }
 
     /**
-     * {@inheritdoc}
      */
-    public function tearDown()
+    protected function removeKeysIfExist()
     {
-        $privateKey = 'private.pem';
-        $publicKey  = 'public.pem';
+        $privateKey = $this->generator->getPrivateKeyPath();
+        $publicKey  = $this->generator->getPublicKeyPath();
 
         if (file_exists($publicKey)) {
             unlink($publicKey);
@@ -53,5 +61,13 @@ class BaseTestGenerator extends \PHPUnit_Framework_TestCase
         if (file_exists($privateKey)) {
             unlink($privateKey);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->removeKeysIfExist();
     }
 }

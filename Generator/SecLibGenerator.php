@@ -20,6 +20,20 @@ use phpseclib\Crypt\RSA;
  */
 class SecLibGenerator extends AbstractGenerator
 {
+
+    /**
+     * Constructor.
+     *
+     * @param string $privateKeyPath
+     * @param string $publicKeyPath
+     * @param string $privateKeyBits
+     * @param string $passphrase
+     */
+    public function __construct($privateKeyPath, $publicKeyPath, $privateKeyBits, $passphrase)
+    {
+        parent::__construct($privateKeyPath, $publicKeyPath, $privateKeyBits, 'RSA', $passphrase);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,7 +42,7 @@ class SecLibGenerator extends AbstractGenerator
         $rsa = new RSA();
         $rsa->setPassword($this->passphrase);
 
-        extract($rsa->createKey(4096));
+        extract($rsa->createKey($this->privateKeyBits));
 
         return [
             'private' => $privatekey,

@@ -12,7 +12,7 @@
 namespace RCH\Keygen\Generator;
 
 /**
- * Generate SSH keys for OpenSSL.
+ * Generate keys for OpenSSL.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -24,8 +24,8 @@ class OpenSSLGenerator extends AbstractGenerator
     public function generate()
     {
         $privateKey = openssl_pkey_new(array(
-            'private_key_bits'            => 4096,
-            'private_key_type'            => OPENSSL_KEYTYPE_RSA,
+            'private_key_bits'            => $this->privateKeyBits,
+            'private_key_type'            => $this->privateKeyType == 'RSA' ? OPENSSL_KEYTYPE_RSA : OPENSSL_KEYTYPE_DSA,
             'encrypt_key'                 => true,
             'encrypt_key_cipher'          => OPENSSL_CIPHER_AES_256_CBC,
         ));
