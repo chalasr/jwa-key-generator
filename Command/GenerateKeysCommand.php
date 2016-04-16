@@ -39,10 +39,7 @@ class GenerateKeysCommand extends Command
     {
         $this
             ->setName('generate')
-            ->setDescription('Generate public/private keys')
-            ->addOption('dest-path', null, InputOption::VALUE_OPTIONAL, 'The absolute path of the directory where in the keys will be exported, by default they will be only displayed in output', null)
-            ->addOption('key-type', null, InputOption::VALUE_OPTIONAL, "The key type, can be 'rsa' or 'dsa'", 'rsa')
-            ->addOption('encryption-engine', null, InputOption::VALUE_REQUIRED, 'The encryption engine, can be openssl or seclib', 'openssl');
+            ->setDescription('Generate public/private keys');
     }
 
     /**
