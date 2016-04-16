@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use RCH\Keygen\Command\GenerateKeysCommand;
+
+$app = new Application('rch/keygen', '0.0.1');
+$app->add(new GenerateKeysCommand());
+
+$app->run();
